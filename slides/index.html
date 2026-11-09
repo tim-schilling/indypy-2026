@@ -642,7 +642,8 @@
       Reveal.on('slidechanged', syncTestimonials);
       Reveal.on('ready', syncTestimonials);
 
-      const POLLS_URL = window.POLLS_URL;
+      // Strip trailing slashes so joined paths don't get a double "/".
+      const POLLS_URL = window.POLLS_URL.replace(/\/+$/, "");
       const POLL_SLUG = window.POLL_SLUG;
       const pollToken = window.POLL_TOKEN;
       const pollFrame = document.getElementById('poll-frame');
