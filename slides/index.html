@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What's new in Django's community? — IndyPy</title>
+    <link rel="stylesheet" href="vendor/reveal.js/dist/reset.css" />
+    <link rel="stylesheet" href="vendor/reveal.js/dist/reveal.css" />
+    <link rel="stylesheet" href="vendor/reveal.js/dist/theme/white.css" />
+    <link rel="stylesheet" href="vendor/highlight.js/styles/xcode.css" />
+    <link rel="stylesheet" href="vendor/fonts/poppins/poppins.css" />
+    <style>
+      .reveal pre code {
+        max-height: none;
+      }
+      .reveal pre {
+        width: 100%;
+        font-size: 0.8em;
+        margin-top: 0;
+      }
+      .reveal .slide-code-75 pre {
+        font-size: 0.75em;
+      }
+      .reveal .slide-code-70 pre {
+        font-size: 0.70em;
+      }
+      .reveal .slide-code-65 pre {
+        font-size: 0.65em;
+      }
+      .reveal .slide-code-60 pre {
+        font-size: 0.6em;
+      }
+      :root {
+        --r-heading-font: 'Poppins', sans-serif;
+        --r-heading-text-transform: none;
+        --r-background-color: #faf6ec;
+        --accent-underline: #f5a623;
+        --blue-dark: #1a6fcf;
+        --blue-darker: #14569f;
+        --blue: #4a9be8;
+        --blue-soft: rgba(26, 111, 207, 0.08);
+        --blue-border: rgba(26, 111, 207, 0.35);
+      }
+      .reveal h1 {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 0.28em;
+      }
+      .reveal h1::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 3.5em;
+        height: 0.06em;
+        background: var(--accent-underline);
+        border-radius: 999px;
+      }
+      .reveal .role-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5em;
+        max-width: 52em;
+        margin: 0 auto;
+        text-align: left;
+      }
+      .reveal .role-card {
+        border-left: 0.2em solid var(--blue-dark);
+        background: var(--blue-soft);
+        border-radius: 0 0.5em 0.5em 0;
+        padding: 0.7em 1em;
+      }
+      .reveal .role-card .role-title {
+        display: block;
+        font-family: var(--r-heading-font);
+        font-weight: 600;
+        font-size: 1.2em;
+        color: #222;
+      }
+      .reveal .role-card .role-desc {
+        display: block;
+        font-size: 0.9em;
+        color: #5a5a5a;
+        margin-top: 0.3em;
+      }
+      #slide-footer {
+        position: fixed;
+        bottom: 0.75em;
+        left: 0.75em;
+        font-family: var(--r-heading-font);
+        font-size: 1.2em;
+        color: #555;
+        z-index: 100;
+      }
+      #poll-frame {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      /* Stacks the testimonials in one spot so they can fade between each other.
+         Sized in px because Reveal scales the 1440x753 slide as a whole. */
+      .reveal .testimonials {
+        display: grid;
+        width: 880px;
+        aspect-ratio: 1200 / 630;
+        margin-top: 0.3em;
+      }
+      .reveal .testimonials img {
+        grid-area: 1 / 1;
+        width: 100%;
+        height: auto;
+        align-self: center;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        border-radius: 12px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .reveal .testimonials img.is-active {
+        opacity: 1;
+      }
+      .reveal .poll-qr {
+        width: 376px;
+        height: 376px;
+        margin: 0.5em 0 0;
+        border: 0;
+        box-shadow: none;
+      }
+      /* Poll questions are drawn into the slides only for the speaker view's
+         previews. The main window shows the live results iframe instead. */
+      .reveal .poll-preview {
+        display: none;
+      }
+      .speaker-preview .reveal .poll-preview {
+        display: block;
+      }
+      .reveal .poll-preview ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .reveal .poll-preview li {
+        margin: 0.3em 0;
+      }
+      .reveal .poll-preview .poll-bar {
+        height: 0.4em;
+        background: var(--blue-soft);
+        border-radius: 999px;
+      }
+      .reveal .poll-preview .poll-bar span {
+        display: block;
+        height: 100%;
+        background: var(--blue-dark);
+        border-radius: 999px;
+      }
+      .reveal .poll-preview .is-winner {
+        font-weight: 700;
+      }
+      /* Keep Reveal's controls and progress bar above the poll results. */
+      .reveal {
+        z-index: 1;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="slide-footer">Tim Schilling • www.better-simple.com</div>
+    <!-- Lives outside .slides so Reveal never unloads it and its WebSocket stays open. -->
+    <iframe id="poll-frame" title="Live poll results" hidden></iframe>
+    <div class="reveal">
+      <div class="slides">
+        <section id="intro">
+          <h2>What's new in Django's community?</h2>
+          <p>IndyPy Meet Up</p>
+          <img class="poll-qr" alt="QR code to join the live polls" />
+          <p>https://polls.better-simple.com/indypy/ (to answer ?'s)</p>
+          <aside class="notes">
+            Hi folks, my name is Tim Schilling. I'm here to tell you about what's new in the Django community. The original version of this talk was effectively a list of facts and probably pretty boring. Instead, what's going to happen is that I'm going to ask a series of questions. And for every question we get a majority of correct answers for, I'll donate 10 dollars to the DSF. I think I've got about 20+ questions, so we have a chance of donating a nice chunk of money. You can participate by browsing to this URL or scanning the QR code.
+          </aside>
+        </section>
+
+        <section>
+          <h1>Goals</h1>
+					<div class="role-grid">
+						<div class="role-card">
+							<span class="role-title">Show the robust Django community</span>
+            </div>
+						<div class="role-card">
+							<span class="role-title">Opportunities to get involved</span>
+            </div>
+						<div class="role-card">
+							<span class="role-title">Have fun acknowledging volunteer work</span>
+            </div>
+            <div class="role-card">
+              <div class="role-desc" style="margin-top:0">
+                <img class="poll-qr" style="height: 10rem; margin-top:0" alt="QR code to join the live polls" />
+                <p style="margin:0">polls.better-simple.com/indypy/</p>
+              </div>
+            </div>
+          </div>
+          <aside class="notes">
+            There are a few things I'm hoping to accomplish with this talk. The first is to show that Django's community is robust and is an undervalued. Second, for folks who are interested, to show there are opportunities for people to get involved in the community. And third, to have fun while acknowledging all the volunteer work the community puts in.
+          </aside>
+        </section>
+
+				<section>
+					<h1>About me</h1>
+					<div class="role-grid">
+						<div class="role-card">
+							<span class="role-title">Django Leader</span>
+							<span class="role-desc">6.x Steering Council, Djangonaut Space, Django Commons</span>
+						</div>
+						<div class="role-card">
+							<span class="role-title">Django Debug Toolbar</span>
+							<span class="role-desc">Co-maintainer</span>
+						</div>
+						<div class="role-card">
+							<span class="role-title">Avid Blogger</span>
+							<span class="role-desc">www.better-simple.com</span>
+						</div>
+						<div class="role-card">
+							<span class="role-title">Conference Speaker</span>
+							<span class="role-desc">PyCon, DjangoCon US, DjangoCon Africa, PyOhio</span>
+						</div>
+					</div>
+					<aside class="notes">
+            Since this is my first IndyPy meeting, (my excuse is that I live across the state line in
+            Champaign-Urbana), I want to introduce myself. My name is Tim Schilling and I've been a python developer
+            for about 14 years. I'm an avid contributor to the Django community and an admin with several community
+            groups.
+            I'm also a member of the 6.x Steering Council for Django and one of the maintainers for the django debug toolbar.
+					</aside>
+				</section>
+
+        <section id="mentorship">
+          <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.6em;">
+            <h2 style="margin:0;">Professional Mentorship</h2>
+            <a href="https://www.better-simple.com/lets-meet/"
+               style="font-family:'Poppins',sans-serif; font-size:1em; font-weight:700; color:#1a6fcf; text-decoration:none; border-bottom:3px solid #1a6fcf; padding-bottom:2px;">
+              www.better-simple.com/lets-meet/
+            </a>
+            <div class="testimonials">
+              <img class="is-active" src="assets/testimonials/alex-og.png" alt="Testimonial from Alex, Senior Software Engineer" />
+              <img src="assets/testimonials/ben-og.png" alt="Testimonial from Ben, Freelance Software Engineer" />
+              <img src="assets/testimonials/marcus-lee-newsletter.png" alt="Testimonial from Marcus Lee, Full-Stack Python Engineer" />
+            </div>
+          </div>
+          <aside class="notes">
+            Now I'd like to shamelessly plug my business. These days, I've switched to creating educational content for devs and offer mentorship services for folks. If you're at a place in your career where you could use a sounding board, let me know. I think you'd be surprised at what you can do with someone else in your corner. My meetings with clients typically center around technical topics, career guidance and learning new skills. While there's plenty of information available on the web, it can be challenging sorting through it all.
+
+            With that out of the way, let's get to questions!
+          </aside>
+        </section>
+
+        <section data-poll-question="1">
+          <aside class="notes">
+            [Read question]
+            The fellows are the folks who do a lot of the maintenance work for the community. They handle security reports, merge PRs, cut releases and about 50 other things. Django is in large part successful due to this program.
+          </aside>
+        </section>
+
+        <section data-poll-question="2">
+          <aside class="notes">
+            [Read question]
+            The big news from the board is that they are hiring an executive director. The board has been interviewing candidates recently and I'm optimistic they'll find someone. The ED will play a key part in maturing the Foundation's internal structure, helping ensure the DSF can properly support and sustain the ecosystem going forward.
+          </aside>
+        </section>
+
+        <section data-poll-question="3">
+          <aside class="notes">
+            [Read question]
+          </aside>
+        </section>
+
+        <section data-poll-question="4">
+          <aside class="notes">
+            Alright we're cruising now.
+            [Read question]
+            Some other fun facts, there have been 34 DjangoCons and 24 smaller Django events since 2010.
+          </aside>
+        </section>
+
+        <section>
+          <h1>DjangoCon US 2027</h1>
+          <p>https://2027.djangocon.us</p>
+          <p>Riverside CA, September 13-17</p>
+          <aside class="notes">
+            Oh, and please note, next year's DjangoCon US site is already up. It's going to be in Riverside California, Sept 13th - 17th. So probably a little warmer than a DjangoCon Antartica.
+          </aside>
+        </section>
+
+        <section data-poll-question="5">
+          <aside class="notes">
+            [Read question]
+            These stats really impressed me and it's kind of mind-boggling the impact the DjangoGirls organization has had across the globe.
+          </aside>
+        </section>
+
+        <section data-poll-question="6">
+          <aside class="notes">
+            [Read question]
+            Three of these are amazing resources that I think everyone should be aware of. The fourth is, umm, let's call it an aspiration.
+          </aside>
+        </section>
+
+        <section data-poll-question="7">
+          <aside class="notes">
+            [Read question]
+            Answer: Technically it's all of them. There are 22k pages on PyPI. 9k have had 5 or more releases. While Django Packages lists about 6k packages on its site. In short, there's a lot of third-party packages out there!
+          </aside>
+        </section>
+
+        <section>
+          <h1>Time for new development questions!</h1>
+          <aside class="notes">
+            If you've been wondering when we were going to get to the new information, well this is the signal. The rest of the questions will be about the new developments, so let's go.
+          </aside>
+        </section>
+
+        <section data-poll-question="8">
+          <aside class="notes">
+            Last year we added a third fellow to the roster. Who was it? In my opinion this is probably the biggest impact to the community. They are the people that can see the patterns across the project and support the community in high leverage ways.
+          </aside>
+        </section>
+
+        <section>
+          <h1>Django New Features</h1>
+          <p>https://github.com/django/new-features</p>
+          <aside class="notes">
+            Before we get to the next question, I need to provide some context. Last year, the Django Steering Council introduced a new mechanism to discuss and add features to Django. This moved feature discussion out of the issue tracker and into the new features repo.
+            It allows everyone to easily chime in via emoji on ideas so we can see which features are beneficial. From there the Steering Council advances things based on consensus and volunteers. We'd love to know what features are useful and to get volunteers to help build things.
+          </aside>
+        </section>
+
+        <section data-poll-question="9">
+          <aside class="notes">
+            Now with that context. [Read question]
+          </aside>
+        </section>
+
+        <section data-poll-question="10">
+          <aside class="notes">
+            Another thing this iteration of the Steering Council has been doing is approving more DEPs. Otherwise known as Django Enhancement Proposals. The Steering council has accepted several of these, however one on this list isn't a real DEP. Which isn't real?
+          </aside>
+        </section>
+
+        <section data-poll-question="11">
+          <aside class="notes">
+            One of the goals for the Steering Council was to improve the third-party ecosystem. This was done because the majority of new features come in as third-party packages. We wanted to make that path for new feature development smoother.
+            [Read question]
+          </aside>
+        </section>
+
+        <section data-poll-question="12">
+          <aside class="notes">
+            [Read question]
+            New-ish here really means, the team or working group was added in the past five years.
+          </aside>
+        </section>
+
+        <section data-poll-question="13">
+          <aside class="notes">
+            As I was writing these out, I wondered if anyone is confused by these group names.
+          </aside>
+        </section>
+
+        <section data-poll-question="14">
+          <aside class="notes">
+            Another thing the Steering Council did was work with all the existing teams to generate a charter similar to the Working Groups structure. This lead to several conversations around what does it mean to be a member, what are the expectations of the teams and how does the team manage its membership. Out of that discussion, we also updated the Security Team to have a new role. What is that new role's name?
+          </aside>
+        </section>
+
+        <section>
+          <h1>What about the broader community?!</h1>
+          <aside class="notes">
+            You may have noticed those questions were all DSF-specific developments. There have been many Django community developments as well, so let's see how many you're familiar with.
+          </aside>
+        </section>
+
+        <section data-poll-question="15">
+          <aside class="notes">
+            [Read question]
+            Answer: Yes, it's a contributor mentorship program! It's an 8 week program that matches people wanting to learn to contribute to open source with mentors in the community to guide them on their way. Session 7 is concluding in a few weeks with Session 8 scheduled for early 2027. Anyone interested in participating or volunteering, should please reach out!
+          </aside>
+        </section>
+
+        <section data-poll-question="16">
+          <aside class="notes">
+            [Read question]
+            Answer: Yes, Django Commons is a community organization that supports community maintained packages. If you're looking for a place to transition your package or to contribute to open source, give it a look!
+          </aside>
+        </section>
+
+        <section data-poll-question="17">
+          <aside class="notes">
+            [Read question]
+            Answer: This is an annual contributor sprint event where the sole focus is on contributing to Django and the ecosystem. People gather to collaborate, connect and improve Django. We see a lot of significant features coming out of this which is amazing to see.
+          </aside>
+        </section>
+
+        <section data-poll-question="18">
+          <aside class="notes">
+            [Read question]
+            Answer: This is a newsletter of various Django news in the community. It contains blog posts, videos, podcasts and updates from the people working on Django. If you're not subscribed today, I highly, highly recommend subscribing. It's a great way to connect with the goings ons in the community.
+          </aside>
+        </section>
+
+        <section data-poll-question="19">
+          <aside class="notes">
+            [Read question]
+            Answer: This is an aggregation of video content about Django. It contains the videos from all the Django conferences, various Python conferences, Djangonaut Space Guest Speakers and Django Chat episodes.
+          </aside>
+        </section>
+
+        <section data-poll-question="20">
+          <aside class="notes">
+            [Read question]
+            Answer: This is exactly what it sounds like. It's a place where companies can post their jobs. It's run by the same folks who do Django News, so listing your jobs there gets a pretty big audience of Django developers.
+          </aside>
+        </section>
+
+        <section data-poll-question="21">
+          <aside class="notes">
+            This is the last question of the night! [Read question]
+          </aside>
+        </section>
+        
+        <!-- TODO: fill in real content sections below. -->
+        <section>
+          <h2>Django Probe</h2>
+          <pre><code data-trim data-noescape  class="language-bash">
+            uvx django-probe scan .      # View the payload
+          </code></pre>
+          <pre><code data-trim data-noescape class="language-json">
+            {
+              "dependencies":    {"asgiref": "3.12.1", ...},
+              "django_settings": {"ALLOWED_HOSTS": 1, ...},
+              "django_version":  "6.1.2",
+              "files_scanned":   121,
+              "patterns":        {"probe:auth_user_model_setting": 1, ...}
+              "python_version":  "3.9",
+              "usage":           {"django.contrib.admin.display": 7, ...},
+            }
+          </code></pre>
+          <aside class="notes">
+            So Django Probe is tool that collects and shares how you use Django. It inspects the AST to collect which APIs, settings are being used, then generates a counts dictionary. It's intended to help maintainers understand if certain parts of Django are being used and to what extent.
+          </aside>
+        </section>
+
+        <section>
+        </section>
+
+      </div>
+    </div>
+    <script src="vendor/reveal.js/dist/reveal.js"></script>
+    <script src="vendor/reveal.js/plugin/markdown/markdown.js"></script>
+    <script src="vendor/reveal.js/plugin/highlight/highlight.js"></script>
+    <script src="vendor/reveal.js/plugin/notes/notes.js"></script>
+    <!-- Generated by `just slides` from POLLS_URL, POLL_SLUG and POLL_TOKEN. -->
+    <script src="poll-config.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        width: 1440,
+        height: 753,
+        margin: 0.04,
+        center: false,
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+      });
+
+      // Uncomment this to show the notes when to print a PDF.
+      // Reveal.configure({ showNotes: true, showNotes: 'separate-page' });
+
+      const footer = document.getElementById('slide-footer');
+      function updateFooter() {
+        footer.style.display = Reveal.getIndices().h === 0 ? 'none' : 'block';
+      }
+      Reveal.on('slidechanged', updateFooter);
+      Reveal.on('ready', updateFooter);
+
+      // Cycle the testimonials only while the mentorship slide is showing.
+      const TESTIMONIAL_INTERVAL_MS = 5000;
+      const testimonials = document.querySelectorAll('#mentorship .testimonials img');
+      let testimonialIndex = 0;
+      let testimonialTimer = null;
+
+      function showNextTestimonial() {
+        testimonials[testimonialIndex].classList.remove('is-active');
+        testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+        testimonials[testimonialIndex].classList.add('is-active');
+      }
+
+      function syncTestimonials() {
+        const onSlide = Reveal.getCurrentSlide().id === 'mentorship';
+        if (onSlide && !testimonialTimer) {
+          testimonialTimer = setInterval(showNextTestimonial, TESTIMONIAL_INTERVAL_MS);
+        } else if (!onSlide && testimonialTimer) {
+          clearInterval(testimonialTimer);
+          testimonialTimer = null;
+        }
+      }
+      Reveal.on('slidechanged', syncTestimonials);
+      Reveal.on('ready', syncTestimonials);
+
+      const POLLS_URL = window.POLLS_URL;
+      const POLL_SLUG = window.POLL_SLUG;
+      const pollToken = window.POLL_TOKEN;
+      const pollFrame = document.getElementById('poll-frame');
+      document.querySelectorAll('.poll-qr').forEach((img) => {
+        img.src = `${POLLS_URL}/${POLL_SLUG}/qr.svg`;
+      });
+
+      function setPollQuestion(position) {
+        if (!pollToken) {
+          console.warn('No poll token; set POLL_TOKEN and restart `just slides` to drive the poll.');
+          return;
+        }
+        fetch(`${POLLS_URL}/api/decks/${POLL_SLUG}/current-question/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${pollToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ position }),
+        })
+          .then((response) => {
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          })
+          .catch((error) => console.error('Could not switch the poll question', error));
+      }
+
+      function syncPoll() {
+        const position = Reveal.getCurrentSlide().dataset.pollQuestion;
+        pollFrame.hidden = !position;
+        if (position) setPollQuestion(Number(position));
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Draws a question into its slide for the speaker view's previews. The main
+      // window hides this and shows the live results iframe instead.
+      function renderPollPreview(question, withResults) {
+        const section = document.querySelector(`[data-poll-question="${question.position}"]`);
+        if (!section) return;
+        let preview = section.querySelector('.poll-preview');
+        if (!preview) {
+          preview = document.createElement('div');
+          preview.className = 'poll-preview';
+          section.prepend(preview);
+        }
+        const choices = question.choices.map((choice) => {
+          const label = `${choice.key}. ${escapeHtml(choice.label)}`;
+          if (!withResults) return `<li>${label}</li>`;
+          return `<li class="${choice.is_winner ? 'is-winner' : ''}">
+            ${label} · ${choice.votes} (${choice.percentage}%)
+            <div class="poll-bar"><span style="width: ${choice.percentage}%"></span></div>
+          </li>`;
+        });
+        let total = '';
+        if (withResults) {
+          total = `${question.response_count} response${question.response_count === 1 ? '' : 's'}`;
+          // connected is null when the polls site can't count who is on the page.
+          if (question.connected !== null) total += ` · ${question.connected} connected`;
+          total = `<p>${total}</p>`;
+        }
+        preview.innerHTML = `<h3>${escapeHtml(question.prompt)}</h3><ul>${choices.join('')}</ul>${total}`;
+      }
+
+      // Questions that already have results, so the question list doesn't draw over them.
+      const positionsWithResults = new Set();
+
+      // Fetches every question once so the upcoming slide preview can show it.
+      // This is a single request instead of a live connection per slide.
+      async function loadPollQuestions() {
+        if (!pollToken) return;
+        try {
+          const response = await fetch(`${POLLS_URL}/api/decks/${POLL_SLUG}/questions/`, {
+            headers: { 'Authorization': `Bearer ${pollToken}` },
+          });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const { questions } = await response.json();
+          for (const question of questions) {
+            if (!positionsWithResults.has(question.position)) renderPollPreview(question, false);
+          }
+        } catch (error) {
+          console.error('Could not load the poll questions', error);
+        }
+      }
+
+      // The main window's results iframe posts each update to the deck. The main
+      // window passes it on to the speaker view's previews over this channel, so
+      // the speaker view needs no connection of its own.
+      const resultsChannel = new BroadcastChannel(`poll-results-${POLL_SLUG}`);
+
+      function showResults(question) {
+        if (!question) return;
+        positionsWithResults.add(question.position);
+        renderPollPreview(question, true);
+      }
+
+      function relayResults() {
+        let latestResults = null;
+        window.addEventListener('message', (event) => {
+          if (event.source !== pollFrame.contentWindow) return;
+          if (event.origin !== new URL(POLLS_URL).origin) return;
+          if (event.data?.type !== 'better-simple-polls:results') return;
+          latestResults = event.data.question;
+          resultsChannel.postMessage({ type: 'results', question: latestResults });
+        });
+        // A speaker view opened mid-talk asks for the results it missed.
+        resultsChannel.addEventListener('message', (event) => {
+          if (event.data?.type === 'request' && latestResults) {
+            resultsChannel.postMessage({ type: 'results', question: latestResults });
+          }
+        });
+      }
+
+      // The speaker view previews slides in frames that run this script too. Only the
+      // main window should load the poll and switch questions.
+      Reveal.on('ready', () => {
+        if (Reveal.isSpeakerNotes()) {
+          document.body.classList.add('speaker-preview');
+          resultsChannel.addEventListener('message', (event) => {
+            if (event.data?.type === 'results') showResults(event.data.question);
+          });
+          resultsChannel.postMessage({ type: 'request' });
+          loadPollQuestions();
+          return;
+        }
+        relayResults();
+        pollFrame.src = `${POLLS_URL}/embed/${POLL_SLUG}/results/`;
+        syncPoll();
+        Reveal.on('slidechanged', syncPoll);
+      });
+    </script>
+  </body>
+</html>

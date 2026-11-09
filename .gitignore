@@ -1,0 +1,4 @@
+.env
+slides/poll-config.js
+.idea/
+.claude/settings.local.json
