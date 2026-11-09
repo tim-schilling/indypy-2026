@@ -91,6 +91,75 @@
         color: #5a5a5a;
         margin-top: 0.3em;
       }
+      .reveal .lede {
+        font-size: 2.1em;
+        color: #333;
+        max-width: 22em;
+        margin: 0.9em auto 0;
+        line-height: 1.4;
+      }
+      .reveal .cta {
+        margin-top: 1.2em;
+      }
+      .reveal .link-badge {
+        display: inline-block;
+        font-size: 2.3em;
+        font-family: var(--r-heading-font);
+        font-weight: 600;
+        color: var(--blue-dark);
+        text-decoration: underline;
+        text-underline-offset: 0.15em;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+      }
+      .reveal .link-badge:hover {
+        color: var(--blue-darker);
+      }
+      .reveal .sub-note {
+        display: block;
+        font-size: 1.7em;
+        color: #5a5a5a;
+        margin-top: 0.6em;
+      }
+      /* For slides where the link shares space with a QR code or images. */
+      .reveal .cta.compact {
+        margin-top: 0.4em;
+      }
+      .reveal .cta.compact .link-badge {
+        font-size: 1.1em;
+      }
+      .reveal .cta.compact .sub-note {
+        font-size: 0.8em;
+        margin-top: 0.2em;
+      }
+      /* For URLs too long to fit on one line at the full badge size. */
+      .reveal .cta.long .link-badge {
+        font-size: 1.6em;
+      }
+      /* Centers transition slides vertically since the deck uses center: false.
+         Sized in px because Reveal scales the 1440x753 slide as a whole. */
+      .reveal .divider {
+        height: 680px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .reveal ul.link-columns {
+        display: block;
+        columns: 3;
+        column-gap: 2em;
+        max-width: 52em;
+        margin: 0.5em auto 0;
+        padding: 0;
+        list-style: none;
+        text-align: left;
+        font-size: 0.8em;
+      }
+      .reveal ul.link-columns li {
+        break-inside: avoid;
+        margin: 0.25em 0;
+      }
       #slide-footer {
         position: fixed;
         bottom: 0.75em;
@@ -169,7 +238,7 @@
       .reveal .poll-preview .is-winner {
         font-weight: 700;
       }
-      /* Keep Reveal's controls and progress bar above the poll results. */
+      /* Keep Reveal's progress bar above the poll results. */
       .reveal {
         z-index: 1;
       }
@@ -186,7 +255,10 @@
           <h2>What's new in Django's community?</h2>
           <p>IndyPy Meet Up</p>
           <img class="poll-qr" alt="QR code to join the live polls" />
-          <p>https://polls.better-simple.com/indypy/ (to answer ?'s)</p>
+          <div class="cta compact">
+            <a class="link-badge" href="https://polls.better-simple.com/indypy/">polls.better-simple.com/indypy/</a>
+            <span class="sub-note">to answer the questions</span>
+          </div>
           <aside class="notes">
             Hi folks, my name is Tim Schilling. I'm here to tell you about what's new in the Django community. The original version of this talk was effectively a list of facts and probably pretty boring. Instead, what's going to happen is that I'm going to ask a series of questions. And for every question we get a majority of correct answers for, I'll donate 10 dollars to the DSF. I think I've got about 20+ questions, so we have a chance of donating a nice chunk of money. You can participate by browsing to this URL or scanning the QR code.
           </aside>
@@ -248,14 +320,13 @@
         <section id="mentorship">
           <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:0.6em;">
             <h2 style="margin:0;">Professional Mentorship</h2>
-            <a href="https://www.better-simple.com/lets-meet/"
-               style="font-family:'Poppins',sans-serif; font-size:1em; font-weight:700; color:#1a6fcf; text-decoration:none; border-bottom:3px solid #1a6fcf; padding-bottom:2px;">
-              www.better-simple.com/lets-meet/
-            </a>
+            <div class="cta compact" style="margin:0;">
+              <a class="link-badge" href="https://www.better-simple.com/lets-meet/">www.better-simple.com/lets-meet/</a>
+            </div>
             <div class="testimonials">
-              <img class="is-active" src="assets/testimonials/alex-og.png" alt="Testimonial from Alex, Senior Software Engineer" />
+              <img class="is-active" src="assets/testimonials/marcus-lee-newsletter.png" alt="Testimonial from Marcus Lee, Full-Stack Python Engineer" />
               <img src="assets/testimonials/ben-og.png" alt="Testimonial from Ben, Freelance Software Engineer" />
-              <img src="assets/testimonials/marcus-lee-newsletter.png" alt="Testimonial from Marcus Lee, Full-Stack Python Engineer" />
+              <img src="assets/testimonials/alex-og.png" alt="Testimonial from Alex, Senior Software Engineer" />
             </div>
           </div>
           <aside class="notes">
@@ -295,8 +366,10 @@
 
         <section>
           <h1>DjangoCon US 2027</h1>
-          <p>https://2027.djangocon.us</p>
-          <p>Riverside CA, September 13-17</p>
+          <div class="cta">
+            <a class="link-badge" href="https://2027.djangocon.us">https://2027.djangocon.us</a>
+            <span class="sub-note">Riverside CA, September 13-17</span>
+          </div>
           <aside class="notes">
             Oh, and please note, next year's DjangoCon US site is already up. It's going to be in Riverside California, Sept 13th - 17th. So probably a little warmer than a DjangoCon Antartica.
           </aside>
@@ -324,7 +397,9 @@
         </section>
 
         <section>
-          <h1>Time for new development questions!</h1>
+          <div class="divider">
+            <h1>Time for new development questions!</h1>
+          </div>
           <aside class="notes">
             If you've been wondering when we were going to get to the new information, well this is the signal. The rest of the questions will be about the new developments, so let's go.
           </aside>
@@ -338,7 +413,9 @@
 
         <section>
           <h1>Django New Features</h1>
-          <p>https://github.com/django/new-features</p>
+          <div class="cta long">
+            <a class="link-badge" href="https://github.com/django/new-features">github.com/django/new-features</a>
+          </div>
           <aside class="notes">
             Before we get to the next question, I need to provide some context. Last year, the Django Steering Council introduced a new mechanism to discuss and add features to Django. This moved feature discussion out of the issue tracker and into the new features repo.
             It allows everyone to easily chime in via emoji on ideas so we can see which features are beneficial. From there the Steering Council advances things based on consensus and volunteers. We'd love to know what features are useful and to get volunteers to help build things.
@@ -384,7 +461,9 @@
         </section>
 
         <section>
-          <h1>What about the broader community?!</h1>
+          <div class="divider">
+            <h1>What about the broader community?!</h1>
+          </div>
           <aside class="notes">
             You may have noticed those questions were all DSF-specific developments. There have been many Django community developments as well, so let's see how many you're familiar with.
           </aside>
@@ -487,7 +566,7 @@
 
         <section>
           <h1>Thank you</h1>
-          <ul>
+          <ul class="link-columns">
             <li>www.better-simple.com</li>
             <li>djangoproject.com/community/ecosystem/</li>
             <li>2027.djangocon.us</li>
@@ -499,11 +578,10 @@
             <li>github.com/django/deps</li>
             <li>github.com/django/dsf-working-groups</li>
             <li>djangonaut.space</li>
-            <li>djangon-commons.org</li>
+            <li>django-commons.org</li>
             <li>djangomed.eu</li>
             <li>django.news</li>
             <li>djangotv.com</li>
-            <li>django.news</li>
             <li>djangojobboard.com</li>
           </ul>
           <aside class="notes">
@@ -526,6 +604,7 @@
         height: 753,
         margin: 0.04,
         center: false,
+        controls: false,
         plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
       });
 
