@@ -33,13 +33,20 @@
       :root {
         --r-heading-font: 'Poppins', sans-serif;
         --r-heading-text-transform: none;
-        --r-background-color: #faf6ec;
+        --r-background-color: #f8fafc;
         --accent-underline: #f5a623;
         --blue-dark: #1a6fcf;
         --blue-darker: #14569f;
         --blue: #4a9be8;
         --blue-soft: rgba(26, 111, 207, 0.08);
         --blue-border: rgba(26, 111, 207, 0.35);
+      }
+      /* Matches the better-simple-polls pages so switching to a live poll
+         doesn't change the backdrop. */
+      .reveal-viewport {
+        background:
+          radial-gradient(circle at 85% 5%, rgba(37, 99, 235, 0.08), transparent 28rem),
+          var(--r-background-color);
       }
       .reveal h1 {
         position: relative;
@@ -433,7 +440,7 @@
         
         <!-- TODO: fill in real content sections below. -->
         <section>
-          <h2>Django Probe</h2>
+          <h2>Django Probe (djangoprobe.org)</h2>
           <pre><code data-trim data-noescape  class="language-bash">
             uvx django-probe scan .      # View the payload
           </code></pre>
@@ -450,10 +457,58 @@
           </code></pre>
           <aside class="notes">
             So Django Probe is tool that collects and shares how you use Django. It inspects the AST to collect which APIs, settings are being used, then generates a counts dictionary. It's intended to help maintainers understand if certain parts of Django are being used and to what extent.
+
+            What's exciting about this is that it provides some evidence to back our general feeling. For example, the `extra()` queryset method has been borderline deprecated for years. We haven't deprecated it mainly because there wasn't a clear off ramp for people who are using it. The trouble is, we have no idea if anyone is actually using it. This tool could empower maintainers to take action sooner and make contributing more enjoyable.
           </aside>
         </section>
 
         <section>
+          <h2>Data Supported Decisions</h2>
+          <pre><code data-trim data-noescape>
+            uv add django-experimental
+
+            # In settings.py
+            DJANGO_EXPERIMENTAL_FLAGS = {"ENABLE_NEWAUTH": True}
+
+            # In pyproject.toml
+            [tool.django_probe]
+            packages = [ "django", "django_experimental" ]
+
+            # Terminal
+            uvx django-probe scan .
+            > {"django-experimental": {"enabled_flags": ["ENABLE_NEWAUTH"] }}
+          </code></pre>
+          <aside class="notes">
+            Beyond the deprecation flow, this is also useful on the new feature side of things. We could collect information about how third-party projects are used. So we if had a django-experimental package with leading changes for people to trial out that gated features behind settings, we would be able to see how many projects are utilizing the experimental setting.
+
+            This gives us more than a gut feel for how robust and well-used a particular feature is. This mentality of soliciting for feedback isn't anything new, but I'm hopeful the tooling and automation can make it easier for the community to share which parts of Django are useful.
+          </aside>
+        </section>
+
+        <section>
+          <h1>Thank you</h1>
+          <ul>
+            <li>www.better-simple.com</li>
+            <li>djangoproject.com/community/ecosystem/</li>
+            <li>2027.djangocon.us</li>
+            <li>djangogirls.org</li>
+            <li>awesomedjango.org</li>
+            <li>ccbv.co.uk</li>
+            <li>djangopackages.org</li>
+            <li>github.com/django/new-features</li>
+            <li>github.com/django/deps</li>
+            <li>github.com/django/dsf-working-groups</li>
+            <li>djangonaut.space</li>
+            <li>djangon-commons.org</li>
+            <li>djangomed.eu</li>
+            <li>django.news</li>
+            <li>djangotv.com</li>
+            <li>django.news</li>
+            <li>djangojobboard.com</li>
+          </ul>
+          <aside class="notes">
+            And with that, I want to say thank you. I hope folks found something interesting. Here are all the various links and resources I mentioned from the talk, along with my site. If folks have questions, please don't hesitate to email me. I'm happy to chat.
+          </aside>
         </section>
 
       </div>
