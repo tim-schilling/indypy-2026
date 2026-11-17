@@ -353,6 +353,7 @@
         <section data-poll-question="3">
           <aside class="notes">
             [Read question]
+            A DSF individual member is someone who has made a significant contribution to Django, code and/or community. It's typically a self-nominated process and they are approved by the board. Becoming a DSF individual member grants you the ability to vote in both the board and steering council elections.
           </aside>
         </section>
 
@@ -377,8 +378,9 @@
 
         <section data-poll-question="5">
           <aside class="notes">
-            [Read question]
-            These stats really impressed me and it's kind of mind-boggling the impact the DjangoGirls organization has had across the globe.
+            [Read question] If you're not aware, DjangoGirls+ events are one-day workshops where coaches introduce gender minorities to programming.
+            [After the answer]
+            Those two numbers are really impressive. It's mind-boggling the impact the DjangoGirls organization has had across the globe.
           </aside>
         </section>
 
@@ -436,7 +438,7 @@
 
         <section data-poll-question="11">
           <aside class="notes">
-            One of the goals for the Steering Council was to improve the third-party ecosystem. This was done because the majority of new features come in as third-party packages. We wanted to make that path for new feature development smoother.
+            One of the goals for the Steering Council was to better highlight the third-party ecosystem. There were a few reasons for this. One, the ecosystem is robust, the community maintains a lot of projects. Two many new features to Django core are first introduced as third-party packages so we wanted to make that path smoother.
             [Read question]
           </aside>
         </section>
@@ -558,7 +560,9 @@
             > {"django-experimental": {"enabled_flags": ["ENABLE_NEWAUTH"] }}
           </code></pre>
           <aside class="notes">
-            Beyond the deprecation flow, this is also useful on the new feature side of things. We could collect information about how third-party projects are used. So we if had a django-experimental package with leading changes for people to trial out that gated features behind settings, we would be able to see how many projects are utilizing the experimental setting.
+            Django Probe also improves the new feature development process. There is a proposed django-experimental package from this year's GSoC project by Praful. This would contain the leading changes for people to try out behind feature flags. This means that Django Probe would allow maintainers to see how many projects are utilizing a particular experiment.
+
+            The code example doesn't work entirely, that last bit is a proposed output, but the first half would work successfully. We could gather the APIs and settings of a third-party package.
 
             This gives us more than a gut feel for how robust and well-used a particular feature is. This mentality of soliciting for feedback isn't anything new, but I'm hopeful the tooling and automation can make it easier for the community to share which parts of Django are useful.
           </aside>
